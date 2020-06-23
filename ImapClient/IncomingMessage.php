@@ -394,10 +394,10 @@ class IncomingMessage
         if (isset($objNew->plain)) {
             switch ($objNew->plain->structure->encoding) {
                 case 3:
-                    $objNew->text = imap_base64(mb_convert_encoding( $objNew->plain, "utf-8", $objNew->plain->charset ));
+                    $objNew->text = imap_base64(iconv($objNew->plain->charset, "utf-8//TRANSLIT//IGNORE", $objNew->plain));
                     break;
                 default:
-                    $objNew->text = quoted_printable_decode(mb_convert_encoding( $objNew->plain, "utf-8", $objNew->plain->charset ));
+                    $objNew->text = quoted_printable_decode(iconv($objNew->plain->charset, "utf-8//TRANSLIT//IGNORE", $objNew->plain));
                     break;
             }
             $objNew->types[] = 'text';
